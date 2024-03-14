@@ -7,9 +7,12 @@ fun main() {
     val libro1 = Libro("Libro 1", "autor 1", 1978, "Suspense")
     val libro2 = Libro("Libro 2", "autor 2", 1979, "Terror")
     val libro3 = Libro("Libro 3", "autor 3", 1979, "Terror")
-    val gestor = GestionBiblioteca()
+    val registro: IGestorPrestamos = RegistroPrestamos()
+    val catalogo: IGestorCatalogo = Catalogo()
+    val gestor = GestionBiblioteca(registro, catalogo)
 
-    gestor.agregarElemento(libro1)
+    if(gestor.agregarElemento(libro1)) println("Ha sido prestado")
+    else println("No se ha podido prestar el libro")
     gestor.agregarElemento(libro2)
     gestor.agregarElemento(libro3)
 

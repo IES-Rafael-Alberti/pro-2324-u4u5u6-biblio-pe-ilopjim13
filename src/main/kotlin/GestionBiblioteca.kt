@@ -2,46 +2,46 @@ package org.pebiblioteca
 
 import java.util.*
 
-class GestionBiblioteca {
+/**
+ * Clase principal de nuestro sistema, se encarga de la lógica para gestionar libro y otros elementos,
+ * @property registros: IGestorPrestamos interfaz
+ * @property catalogo: IGestorCatalogo
+ */
+class GestionBiblioteca(val registros:IGestorPrestamos, val catalogo: IGestorCatalogo) {
 
-        val catalogo = Catalogo<Elemento>()
-        val registros = RegistroPrestamos()
 
-        fun agregarElemento(libro:Elemento) {
-            try {
-                catalogo.lista.add(libro)
-            } catch (e : IllegalArgumentException) {
-                println(e)
-            }
+        fun agregarElemento(libro:ElementoBiblioteca):Boolean {
+            return if (catalogo.agregarElemento(libro)) true
+            else false
         }
 
 
-        fun eliminarElemento(id: String): Boolean {
+        fun eliminarElemento(id: String):Boolean {
             val libro = catalogo.lista.find { it.id == id }
-            return if (libro in catalogo.lista) {
-                catalogo.lista.remove(libro)
+            return if(libro != null) {
+                if (catalogo.eliminarElemento(libro)) true
+                else false
+            } else false
+        }
+
+        fun registrarPrestamo(usuario: Usuario, idLibro: String):Boolean {
+            val libro = catalogo.lista.find { it.id == idLibro }
+            return if (libro != null && libro.estado == Estado.DISPONIBLE) {
+                usuario.agregarLibros(libro)
+                registros.registrarPrestamo(usuario, libro)
+                libro.prestar()
                 true
             } else false
         }
 
-        fun registrarPrestamo(usuario: Usuario, idLibro: String) {
+        fun registrarDevolucion(usuario: Usuario, idLibro: String):Boolean {
             val libro = catalogo.lista.find { it.id == idLibro }
-            if (libro != null && libro.estado == Estado.DISPONIBLE) {
-                usuario.agregarLibros(libro)
-                registros.registrarPrestramo(usuario, libro)
-                libro.estado = Estado.PRESTADO
-                println("Libro prestado")
-            } else println("Este libro no está disponible")
-        }
-
-        fun registrarDevolucion(usuario: Usuario, idLibro: String) {
-            val libro = catalogo.lista.find { it.id == idLibro }
-            if (libro != null && libro.estado == Estado.PRESTADO) {
-                usuario.librosPrestados.remove(libro)
-                registros.registrarDevoluciones(usuario, libro)
-                libro.estado = Estado.DISPONIBLE
-                println("Libro devuelto")
-            } else println("Este libro no ha sido prestado")
+            return if (libro != null && libro.estado == Estado.PRESTADO) {
+                usuario.eliminarLibro(libro)
+                registros.registrarDevolucion(usuario, libro)
+                libro.devolver()
+                true
+            } else false
         }
 
         fun consultarDisponibilidad(id: String): Boolean {
@@ -50,15 +50,15 @@ class GestionBiblioteca {
             else false
         }
 
-        fun mostrarTodos():List<Elemento> {
+        fun mostrarTodos():List<ElementoBiblioteca> {
             return catalogo.lista
         }
 
-        fun mostrarDisponibles() :List<Elemento> {
+        fun mostrarDisponibles() :List<ElementoBiblioteca> {
             return catalogo.lista.filter { it.estado == Estado.DISPONIBLE }
         }
 
-        fun mostrarPresatados() :List<Elemento> {
+        fun mostrarPresatados() :List<ElementoBiblioteca> {
             return catalogo.lista.filter { it.estado == Estado.PRESTADO }
         }
 }

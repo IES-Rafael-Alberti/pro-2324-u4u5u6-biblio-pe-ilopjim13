@@ -1,22 +1,22 @@
 package org.pebiblioteca
 
 /**
- * Data clase libro derivada de su clase padre ElementoBiblioteca y del interfaz Prestable que contiene
- * la informacion de los libros de la biblioteca
- * @property titulo:String nombre del libro
+ * Data clase DVD derivada de su clase padre ElementoBiblioteca y del interfaz Prestable que contiene
+ * la informacion de los DVDs de la biblioteca
+ * @property titulo:String nombre del DVD
  * @property autor:String nombre del autor del titulo
- * @property anio:Int añoñ de publicación del libro
- * @property id: String identificador unico para localizar el libro
- * @property estado:Estado indica el estado del libro si está disponible o prestado
+ * @property anio:Int añoñ de publicación del DVD
+ * @property id: String identificador unico para localizar el DVD
+ * @property estado:Estado indica el estado del DVD si está disponible o prestado
  */
-data class Libro(override val titulo:String,
+data class DVD(override val titulo:String,
                  val autor:String,
                  val anio:Int,
                  val tematica:String,
                  override val id: String = UtilidadesBiblioteca.generarIdentificadorUnico(),
                  override var estado: Estado = Estado.DISPONIBLE
 
-        ) :ElementoBiblioteca(id, titulo, estado) {
+) :ElementoBiblioteca(id, titulo, estado) {
 
 
     init {
@@ -31,5 +31,3 @@ data class Libro(override val titulo:String,
         if (estado == Estado.PRESTADO) estado = Estado.DISPONIBLE
     }
 }
-
-
