@@ -1,7 +1,7 @@
 package org.pebiblioteca
 
 class RegistroPrestamos {
-    val prestamosActuales = mutableMapOf<Usuario, MutableList<Libro>>()
+    val prestamosActuales = mutableMapOf<Usuario, MutableList<Elemento>>()
     val historial = mutableListOf<String>()
 
     fun consultarRegistros(id:String): List<String> {

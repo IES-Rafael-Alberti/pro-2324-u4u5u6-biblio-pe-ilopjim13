@@ -2,8 +2,9 @@ package org.pebiblioteca
 
 import java.util.*
 
-data class Usuario(val idUsu: String = UUID.randomUUID().toString(), val nombre:String) {
-    val librosPrestados = mutableListOf<Libro>()
+class Usuario(val nombre:String) {
+    val idUsu: String = UtilidadesBiblioteca.generarIdentificadorUnico()
+    val librosPrestados = mutableListOf<Elemento>()
     companion object {
         var ident = 0
     }
