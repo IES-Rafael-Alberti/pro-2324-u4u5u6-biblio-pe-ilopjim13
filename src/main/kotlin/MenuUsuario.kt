@@ -62,7 +62,7 @@ class MenuUsuario {
 
         println("Introduce la tematica del libro: ")
         val tematica = readln()
-        gestor.agregarElemento(titulo, autor, anio, tematica)
+        //gestor.agregarElemento(titulo, autor, anio, tematica)
 
     }
 

@@ -20,6 +20,8 @@ data class Libro(override val titulo:String,
                  override var estado: Estado = Estado.DISPONIBLE
 
         ) :Elemento {
+
+
     init {
         require(this.anio in (1..2024)) {"ERROR el año no puede ser menor a uno ni mayor a 2024"}
     }

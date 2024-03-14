@@ -7,9 +7,9 @@ class GestionBiblioteca {
         val catalogo = Catalogo<Elemento>()
         val registros = RegistroPrestamos()
 
-        fun agregarElemento(titulo:String, autor:String, anio:Int, tematica:String) {
+        fun agregarElemento(libro:Elemento) {
             try {
-                catalogo.lista.add(Libro(titulo, autor, anio, tematica, UtilidadesBiblioteca.generarIdentificadorUnico()))
+                catalogo.lista.add(libro)
             } catch (e : IllegalArgumentException) {
                 println(e)
             }
@@ -27,11 +27,8 @@ class GestionBiblioteca {
         fun registrarPrestamo(usuario: Usuario, idLibro: String) {
             val libro = catalogo.lista.find { it.id == idLibro }
             if (libro != null && libro.estado == Estado.DISPONIBLE) {
-                usuario.librosPrestados.add(libro)
-                if (usuario in registros.prestamosActuales) registros.prestamosActuales[usuario]?.add(libro)
-                else registros.prestamosActuales[usuario] = mutableListOf(libro)
-                registros.historial.add("${usuario.nombre} con id ${usuario.idUsu} ha tomado prestado el libro ${libro.titulo}")
-                registros.historial.add("${libro.titulo} con id ${libro.id} ha sido tomado por ${usuario.nombre}")
+                usuario.agregarLibros(libro)
+                registros.registrarPrestramo(usuario, libro)
                 libro.estado = Estado.PRESTADO
                 println("Libro prestado")
             } else println("Este libro no está disponible")
@@ -41,9 +38,7 @@ class GestionBiblioteca {
             val libro = catalogo.lista.find { it.id == idLibro }
             if (libro != null && libro.estado == Estado.PRESTADO) {
                 usuario.librosPrestados.remove(libro)
-                if (usuario in registros.prestamosActuales) registros.prestamosActuales[usuario]?.remove(libro)
-                registros.historial.add("${usuario.nombre} con id ${usuario.idUsu} ha devuelto el libro ${libro.titulo}")
-                registros.historial.add("${libro.titulo} con id ${libro.id} ha sido devuelto por ${usuario.nombre}")
+                registros.registrarDevoluciones(usuario, libro)
                 libro.estado = Estado.DISPONIBLE
                 println("Libro devuelto")
             } else println("Este libro no ha sido prestado")

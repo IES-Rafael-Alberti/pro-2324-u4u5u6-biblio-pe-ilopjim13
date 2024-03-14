@@ -8,4 +8,17 @@ class Usuario(val nombre:String) {
     companion object {
         var ident = 0
     }
+
+    fun agregarLibros(libro:Elemento) {
+        if (libro !in librosPrestados) librosPrestados.add(libro)
+    }
+
+    fun eliminarLibro(libro: Elemento) {
+        librosPrestados.remove(libro)
+    }
+
+    fun mostrarLibrosPrestados() {
+        librosPrestados.forEach { println(it) }
+    }
+
 }
