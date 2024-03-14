@@ -10,22 +10,36 @@ class RegistroPrestamos :IGestorPrestamos {
     override val historial = mutableListOf<String>()
 
 
-    override fun registrarDevolucion(usuario: Usuario, libro: ElementoBiblioteca) {
-        if (usuario in prestamosActuales) prestamosActuales[usuario]?.remove(libro)
-        historial.add("${usuario.nombre} con id ${usuario.idUsu} ha devuelto el libro ${libro.titulo}")
-        historial.add("${libro.titulo} con id ${libro.id} ha sido devuelto por ${usuario.nombre}")
+    /**
+     * Registra las devoluciones y añade al historial los registros
+     * @param  usuario: Usuario usuario que va a devolver el elemento
+     * @param elemento: elemento que se va a devolver
+     */
+    override fun registrarDevolucion(usuario: Usuario, elemento: ElementoBiblioteca) {
+        if (usuario in prestamosActuales) prestamosActuales[usuario]?.remove(elemento)
+        historial.add("${usuario.nombre} con id ${usuario.idUsu} ha devuelto el libro ${elemento.titulo}")
+        historial.add("${elemento.titulo} con id ${elemento.id} ha sido devuelto por ${usuario.nombre}")
     }
 
+    /**
+     * Consulta el historial con el id del usuario o del libro
+     * @param id: String del usuario o del libro
+     */
     override fun consultarHistorial(id:String): List<String> {
         return historial.filter { it.contains(id)}
 
     }
 
-    override fun registrarPrestamo(usuario: Usuario, libro:ElementoBiblioteca) {
-        if (usuario in prestamosActuales) prestamosActuales[usuario]?.add(libro)
-        else prestamosActuales[usuario] = mutableListOf(libro)
-        historial.add("${usuario.nombre} con id ${usuario.idUsu} ha tomado prestado el libro ${libro.titulo}")
-        historial.add("${libro.titulo} con id ${libro.id} ha sido prestado por ${usuario.nombre}")
+    /**
+     * Registra los prestamos y añade al historial los registros
+     * @param  usuario: Usuario usuario que va a devolver el elemento
+     * @param elemento: elemento que se va a devolver
+     */
+    override fun registrarPrestamo(usuario: Usuario, elemento:ElementoBiblioteca) {
+        if (usuario in prestamosActuales) prestamosActuales[usuario]?.add(elemento)
+        else prestamosActuales[usuario] = mutableListOf(elemento)
+        historial.add("${usuario.nombre} con id ${usuario.idUsu} ha tomado prestado el libro ${elemento.titulo}")
+        historial.add("${elemento.titulo} con id ${elemento.id} ha sido prestado por ${usuario.nombre}")
     }
 
 

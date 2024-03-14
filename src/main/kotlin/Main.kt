@@ -9,13 +9,15 @@ fun main() {
     val libro3 = Libro("Libro 3", "autor 3", 1979, "Terror")
     val registro: IGestorPrestamos = RegistroPrestamos()
     val catalogo: IGestorCatalogo = Catalogo()
+
+
     val gestor = GestionBiblioteca(registro, catalogo)
+    val catalogo2 = GestorElementos<ElementoBiblioteca>()
+    catalogo2.agregarElemento(libro1)
 
-    if(gestor.agregarElemento(libro1)) println("Ha sido prestado")
-    else println("No se ha podido prestar el libro")
-    gestor.agregarElemento(libro2)
-    gestor.agregarElemento(libro3)
-
+    gestor.agregarElemento("Libro 1", "autor 1", 1978, "Suspense")
+    gestor.agregarElemento("Libro 2", "autor 2", 1979, "Terror")
+    gestor.agregarElemento("Libro 3", "autor 3", 1979, "Terror")
 
     gestor.registrarPrestamo(usuario, libro1.id)
     gestor.registrarPrestamo(usuario, libro1.id)
@@ -25,10 +27,9 @@ fun main() {
     gestor.registrarDevolucion(usuario, libro1.id)
     gestor.registrarPrestamo(usuario, libro3.id)
 
+    MenuUsuario.mostrarMenu(usuario, gestor)
 
-    gestor.catalogo.lista.forEach {
-        println(it)
-    }
+    gestor.mostrarTodos()
 
     gestor.registros.historial.forEach { println(it) }
 }

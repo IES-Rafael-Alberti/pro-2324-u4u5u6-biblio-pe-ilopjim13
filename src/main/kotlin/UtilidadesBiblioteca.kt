@@ -8,6 +8,9 @@ import java.util.UUID
 class UtilidadesBiblioteca {
 
     companion object{
+        /**
+         * Genera un numero unico y lo devuelve
+         */
         fun generarIdentificadorUnico() :String {
             return UUID.randomUUID().toString()
         }

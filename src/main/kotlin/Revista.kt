@@ -23,10 +23,16 @@ data class Revista(override val titulo:String,
         require(this.anio in (1..2024)) {"ERROR el año no puede ser menor a uno ni mayor a 2024"}
     }
 
+    /**
+     * Presta la revista y pone el estado como prestado
+     */
     override fun prestar() {
         if (estado == Estado.DISPONIBLE) estado = Estado.PRESTADO
     }
 
+    /**
+     * Devuelve la revista y pone el estado como disponible
+     */
     override fun devolver() {
         if (estado == Estado.PRESTADO) estado = Estado.DISPONIBLE
     }
